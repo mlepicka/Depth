@@ -36,14 +36,14 @@ DepthTransform::~DepthTransform() {
 void DepthTransform::prepareInterface() {
 
 	// Register data streams, events and event handlers HERE!
-	registerStream("in_homogMatrix", &in_homogMatrix);
+	registerStream("in_homog_matrix", &in_homog_matrix);
 	registerStream("in_depth_xyz", &in_image_xyz);
 	registerStream("out_depth_xyz", &out_image_xyz);
 
 	// Register handlers
 	registerHandler("DepthTransformation", boost::bind(&DepthTransform::DepthTransformation, this));
 	addDependency("DepthTransformation", &in_image_xyz);
-	addDependency("DepthTransformation", &in_homogMatrix);
+	addDependency("DepthTransformation", &in_homog_matrix);
 
 }
 
@@ -70,7 +70,7 @@ void DepthTransform::DepthTransformation() {
 	cv::Mat img = in_image_xyz.read();
 	cv::Mat out_img;
 
-	HomogMatrix tmp_hm = in_homogMatrix.read();
+	HomogMatrix tmp_hm = in_homog_matrix.read();
 	HomogMatrix hm;
 
 	CLOG(LDEBUG) << "Input homogenous matrix:\n" << tmp_hm;
